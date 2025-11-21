@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuisMi Fan - Próximamente</title>
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1>LuisMi Fan</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'inicio' %}">Página Principal</a></li>
+                <li><a href="{% url 'musica_disponible' %}">Música Disponible</a></li>
+                <li><a href="{% url 'proximamente' %}" class="active">Próximamente</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'perfil' %}" style="color: #b93c3c; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            {% if user.perfil.imagen %}
+                                <img src="{{ user.perfil.imagen.url }}" style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #b93c3c;">
+                            {% else %}
+                                <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1rem; cursor: pointer; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i> Salir
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="boton-mini" style="padding: 5px 15px; font-size: 0.9rem;">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="banner">
+            <img src="{% static 'img/luismi-proximos-lanzamientos.jpg' %}" alt="Luis Miguel próximos lanzamientos" class="banner-img">
+            <div class="banner-overlay">
+                <h2>Próximos lanzamientos</h2>
+                <p>Mantente informado sobre los nuevos álbumes que añadiremos pronto</p>
+            </div>
+        </section>
+
+        <section class="info-seccion">
+            <h2>Próximamente en LuisMi Fan</h2>
+            <div class="info-contenido">
+                <article class="info-texto">
+                    <h3>Nuevos álbumes en camino</h3>
+                    <p>Estamos trabajando constantemente para ampliar nuestra colección de música de Luis Miguel y otros artistas latinos. A continuación, te presentamos los álbumes que pronto estarán disponibles en nuestra plataforma.</p>
+                    
+                    <h3>¿Tienes alguna sugerencia?</h3>
+                    <p>Si hay algún álbum o canción específica que te gustaría ver en nuestro sitio, no dudes en contactarnos. Valoramos mucho la opinión de nuestros usuarios y hacemos todo lo posible para satisfacer sus peticiones musicales.</p>
+                    
+                    <h3>Calendario de lanzamientos</h3>
+                    <p>Actualizamos nuestra biblioteca musical cada mes con nuevos álbumes y canciones. Visita regularmente esta sección para estar al tanto de nuestras últimas adiciones.</p>
+                    
+                    <a href="{% url 'inicio' %}" class="boton-mini" style="margin-top: 20px; display: inline-block;">Volver al Inicio</a>
+                </article>
+                
+                <aside class="info-destacado">
+                    <div class="datos-curiosos">
+                        <h3>Próximos álbumes</h3>
+                        <ul>
+                            <li>México Por Siempre (2017)</li>
+                            <li>¡México Por Siempre! En Vivo (2019)</li>
+                            <li>Soy Como Quiero Ser (1987)</li>
+                            <li>Segundo Romance (1994)</li>
+                            <li>Romances (1997)</li>
+                            <li>Amarte Es Un Placer (1999)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="destacados">
+                        <h3>Otros artistas próximamente</h3>
+                        <div class="album-mini">
+                            <p>José José</p>
+                            <a href="https://es.wikipedia.org/wiki/Jos%C3%A9_Jos%C3%A9" class="boton-mini" target="_blank">Próximamente</a>
+                        </div>
+                        <div class="album-mini">
+                            <p>Juan Gabriel</p>
+                            <a href="https://es.wikipedia.org/wiki/Juan_Gabriel" class="boton-mini" target="_blank">Próximamente</a>
+                        </div>
+                        <div class="album-mini">
+                            <p>Cristian Castro</p>
+                            <a href="https://es.wikipedia.org/wiki/Cristian_Castro" class="boton-mini" target="_blank">Próximamente</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'main.js' %}"></script>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h3>LuisMi Fan</h3>
+                <p>El mejor sitio para escuchar la música de Luis Miguel gratis</p>
+            </div>
+            <div class="footer-legal">
+                <p>&copy; 2025 LuisMi Fan. Este sitio es solo con fines educativos.</p>
+                <p>Luis Miguel y su música son propiedad de sus respectivos dueños.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

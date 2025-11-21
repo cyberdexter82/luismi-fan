@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuisMi Fan - Música Disponible</title>
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1>LuisMi Fan</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'inicio' %}">Inicio</a></li>
+                <li><a href="{% url 'musica_disponible' %}" class="active">Música</a></li>
+                <li><a href="{% url 'proximamente' %}">Próximamente</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'perfil' %}" style="color: #b93c3c; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            {% if user.perfil.imagen %}
+                                <img src="{{ user.perfil.imagen.url }}" style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #b93c3c;">
+                            {% else %}
+                                <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1rem; cursor: pointer; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i> Salir
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="boton-mini" style="padding: 5px 15px; font-size: 0.9rem;">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="banner">
+            <img src="{% static 'img/banner-musica-disponible.jpg' %}" alt="Música disponible de Luis Miguel" class="banner-img">
+            <div class="banner-overlay">
+                <h2>Música Disponible</h2>
+                <p>Descubre todos los álbumes de Luis Miguel que puedes escuchar gratis</p>
+            </div>
+        </section>
+
+        <section class="info-seccion">
+            <h2>Álbumes Disponibles</h2>
+            
+            <div class="albumes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="album-card" style="background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <img src="{% static 'img/album-20anos.jpg' %}" alt="Álbum 20 Años" style="width: 100%; height: 250px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: #b93c3c; margin-bottom: 0.5rem;">20 Años</h3>
+                        <p style="color: #777; margin-bottom: 1rem;">1990</p>
+                        <p style="margin-bottom: 1.5rem;">Álbum que celebra los primeros 20 años de vida del artista y marca el inicio de una nueva etapa musical.</p>
+                        <a href="{% url 'album_20' %}" class="boton-mini" style="display: inline-block;">Escuchar Ahora</a>
+                    </div>
+                </div>
+                
+                <div class="album-card" style="background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <img src="{% static 'img/album-romance.jpg' %}" alt="Álbum Romance" style="width: 100%; height: 250px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: #b93c3c; margin-bottom: 0.5rem;">Romance</h3>
+                        <p style="color: #777; margin-bottom: 1rem;">1991</p>
+                        <p style="margin-bottom: 1.5rem;">Una colección de boleros clásicos interpretados de manera contemporánea que revitalizó el género.</p>
+                        <a href="{% url 'album_romance' %}" class="boton-mini" style="display: inline-block;">Escuchar Ahora</a>
+                    </div>
+                </div>
+                
+                <div class="album-card" style="background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <img src="{% static 'img/album-luismiguel2010.jpg' %}" alt="Álbum Luis Miguel 2010" style="width: 100%; height: 250px; object-fit: cover;">
+                    <div style="padding: 1.5rem;">
+                        <h3 style="color: #b93c3c; margin-bottom: 0.5rem;">Luis Miguel (2010)</h3>
+                        <p style="color: #777; margin-bottom: 1rem;">2010</p>
+                        <p style="margin-bottom: 1.5rem;">Álbum homónimo que regresó a Luis Miguel a sus raíces de baladas románticas con un sonido renovado.</p>
+                        <a href="{% url 'album_2010' %}" class="boton-mini" style="display: inline-block;">Escuchar Ahora</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="{% url 'inicio' %}" class="boton-mini" style="display: inline-block; padding: 0.6rem 1.2rem; font-size: 1rem;">Volver al Inicio</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'main.js' %}"></script>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h3>LuisMi Fan</h3>
+                <p>El mejor sitio para escuchar la música de Luis Miguel gratis</p>
+            </div>
+            <div class="footer-legal">
+                <p>&copy; 2025 LuisMi Fan. Este sitio es solo con fines educativos.</p>
+                <p>Luis Miguel y su música son propiedad de sus respectivos dueños.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuisMi Fan - Página Principal</title>
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1>LuisMi Fan</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'inicio' %}" class="active">Página Principal</a></li>
+                <li><a href="{% url 'musica_disponible' %}">Música Disponible</a></li>
+                <li><a href="{% url 'proximamente' %}">Próximamente</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'perfil' %}" style="color: #b93c3c; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            {% if user.perfil.imagen %}
+                                <img src="{{ user.perfil.imagen.url }}" style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #b93c3c;">
+                            {% else %}
+                                <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1rem; cursor: pointer; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i> Salir
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="boton-mini" style="padding: 5px 15px; font-size: 0.9rem;">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="banner">
+            <img src="{% static 'img/imagen-luismi-principal.jpg' %}" alt="Luis Miguel en concierto" class="banner-img">
+            <div class="banner-overlay">
+                <h2>La mejor música de Luis Miguel</h2>
+                <p>Escucha gratis todos sus éxitos</p>
+            </div>
+        </section>
+
+        <section class="info-seccion">
+            <h2>Sobre este sitio</h2>
+            <div class="info-contenido">
+                <article class="info-texto">
+                    <h3>¿Qué es LuisMi Fan?</h3>
+                    <p>LuisMi Fan es un sitio web dedicado a celebrar la legendaria carrera de Luis Miguel, ofreciendo su música de manera gratuita para todos los fans. Nuestra misión es hacer que la música del "Sol de México" sea accesible para todos, permitiendo a los fans nuevos y antiguos disfrutar de sus grandes éxitos en cualquier momento y lugar.</p>
+                    
+                    <h3>¿Por qué Luis Miguel?</h3>
+                    <p>Decidimos enfocarnos en Luis Miguel por su incomparable trayectoria y su impacto en la música latinoamericana. Con más de 40 años de carrera, Luis Miguel ha logrado reinventarse constantemente, abarcando géneros como el pop, bolero, mariachi, y baladas románticas, siempre manteniendo un nivel de excelencia que pocos artistas consiguen.</p>
+                    
+                    <p>Su voz privilegiada y su dedicación a la perfección musical lo han convertido en uno de los artistas más importantes de habla hispana, con más de 100 millones de discos vendidos en todo el mundo. Su influencia trasciende generaciones, y su música sigue siendo relevante décadas después de su debut.</p>
+                    
+                    <h3>Nuestra historia</h3>
+                    <p>Este proyecto nació de la pasión de un grupo de fans que querían crear un espacio donde se pudiera apreciar la magnitud del legado musical de Luis Miguel. Comenzamos recopilando sus álbumes más icónicos, como "Romance", "20 Años" y su álbum homónimo de 2010, con la intención de expandir nuestra colección para incluir toda su discografía.</p>
+                    
+                    <p>Con el tiempo, nuestra visión ha crecido para incluir a otros grandes artistas que, al igual que Luis Miguel, han dejado una huella indeleble en la música latina. Nuestro objetivo es convertirnos en el destino definitivo para los amantes de la música latina de calidad.</p>
+                </article>
+                
+                <aside class="info-destacado">
+                    <div class="datos-curiosos">
+                        <h3>Datos sobre Luis Miguel</h3>
+                        <ul>
+                            <li>Su nombre completo es Luis Miguel Gallego Basteri</li>
+                            <li>Nació el 19 de abril de 1970 en Puerto Rico</li>
+                            <li>Ha ganado 6 premios Grammy y 4 Latin Grammy</li>
+                            <li>Es conocido como "El Sol de México"</li>
+                            <li>Comenzó su carrera musical a los 11 años</li>
+                            <li>Ha vendido más de 100 millones de discos</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="destacados">
+                        <h3>Álbumes destacados</h3>
+                        <div class="album-mini">
+                            <p>20 Años</p>
+                            <a href="{% url 'album_20' %}" class="boton-mini">Escuchar</a>
+                        </div>
+                        <div class="album-mini">
+                            <p>Romance</p>
+                            <a href="{% url 'album_romance' %}" class="boton-mini">Escuchar</a>
+                        </div>
+                        <div class="album-mini">
+                            <p>Luis Miguel (2010)</p>
+                            <a href="{% url 'album_2010' %}" class="boton-mini">Escuchar</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'main.js' %}"></script>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h3>LuisMi Fan</h3>
+                <p>El mejor sitio para escuchar la música de Luis Miguel gratis</p>
+            </div>
+            <div class="footer-legal">
+                <p>&copy; 2025 LuisMi Fan. Este sitio es solo con fines educativos.</p>
+                <p>Luis Miguel y su música son propiedad de sus respectivos dueños.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

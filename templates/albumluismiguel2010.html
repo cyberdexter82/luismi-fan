@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuisMi Fan - Luis Miguel 2010</title>
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <script src="{% static 'main.js' %}"></script>
+
+    <header>
+        <div class="logo">
+            <h1>LuisMi Fan</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'inicio' %}">Página Principal</a></li>
+                <li><a href="{% url 'musica_disponible' %}">Música Disponible</a></li>
+                <li><a href="{% url 'proximamente' %}">Próximamente</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'perfil' %}" style="color: #b93c3c; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            {% if user.perfil.imagen %}
+                                <img src="{{ user.perfil.imagen.url }}" style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #b93c3c;">
+                            {% else %}
+                                <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1rem; cursor: pointer; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="boton-mini" style="padding: 5px 15px; font-size: 0.9rem;">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="boton-retroceso">
+            <a href="{% url 'musica_disponible' %}" class="retroceso-link">← Volver a Música Disponible</a>
+        </div>
+
+        <section class="album-detalle">
+            <div class="album-header">
+                <img src="{% static 'img/album-luismiguel2010.jpg' %}" alt="Álbum Luis Miguel 2010" class="album-portada">
+                <div class="album-info-detalle">
+                    <h2>Luis Miguel</h2>
+                    <p class="album-fecha">2010</p>
+                    <p class="album-descripcion">
+                        "Luis Miguel" es el álbum homónimo lanzado en 2010, después de un período de ausencia en el mercado musical. 
+                        Este trabajo representa su regreso a las baladas pop y reunió a Luis Miguel con el productor y compositor español Juan Carlos Calderón. 
+                        El álbum mostró la madurez vocal del artista y su capacidad para renovarse y mantenerse vigente después de décadas de trayectoria.
+                    </p>
+                </div>
+            </div>
+
+            <div class="canciones-lista">
+                <h3>Canciones</h3>
+                
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">1</span>
+                        <span class="cancion-titulo">Labios de Miel</span>
+                        <span class="cancion-duracion">3:54</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/labiosmiel.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">2</span>
+                        <span class="cancion-titulo">Mujer de Fuego</span>
+                        <span class="cancion-duracion">3:30</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/mujerfuego.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">3</span>
+                        <span class="cancion-titulo">Tres Palabras</span>
+                        <span class="cancion-duracion">2:55</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/tres.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">4</span>
+                        <span class="cancion-titulo">Ella es así</span>
+                        <span class="cancion-duracion">2:47</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/ella.mp3' %}"  type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">5</span>
+                        <span class="cancion-titulo">No existen límites</span>
+                        <span class="cancion-duracion">3:26</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/noexiste.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">6</span>
+                        <span class="cancion-titulo">Siento</span>
+                        <span class="cancion-duracion">3:21</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/siento.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">7</span>
+                        <span class="cancion-titulo">Lo que queda de mí</span>
+                        <span class="cancion-duracion">2:44</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/loquequeda.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">8</span>
+                        <span class="cancion-titulo">Es por ti</span>
+                        <span class="cancion-duracion">3:34</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/esporti.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">9</span>
+                        <span class="cancion-titulo">¿De quién es usted?</span>
+                        <span class="cancion-duracion">2:40</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/dequien.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">10</span>
+                        <span class="cancion-titulo">Tal vez me mientes</span>
+                        <span class="cancion-duracion">2:39</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '2010/talvez.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="navegacion-albumes">
+            <h3>Otros álbumes disponibles</h3>
+            <div class="albumes-nav">
+                <a href="{% url 'album_20' %}" class="album-nav-link">
+                    <img src="{% static 'img/album-20anos.jpg' %}" alt="Álbum 20 Años" class="album-nav-img">
+                    <span>20 Años</span>
+                </a>
+                <a href="{% url 'album_romance' %}" class="album-nav-link">
+                    <img src="{% static 'img/album-romance.jpg' %}" alt="Álbum Romance" class="album-nav-img">
+                    <span>Romance</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'main.js' %}"></script>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h3>LuisMi Fan</h3>
+                <p>El mejor sitio para escuchar la música de Luis Miguel gratis</p>
+            </div>
+            <div class="footer-legal">
+                <p>&copy; 2025 LuisMi Fan. Este sitio es solo con fines educativos.</p>
+                <p>Luis Miguel y su música son propiedad de sus respectivos dueños.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuisMi Fan - Romance</title>
+    
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1>LuisMi Fan</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'inicio' %}">Página Principal</a></li>
+                <li><a href="{% url 'musica_disponible' %}">Música Disponible</a></li>
+                <li><a href="{% url 'proximamente' %}">Próximamente</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'perfil' %}" style="color: #b93c3c; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            {% if user.perfil.imagen %}
+                                <img src="{{ user.perfil.imagen.url }}" style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #b93c3c;">
+                            {% else %}
+                                <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1rem; cursor: pointer; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="boton-mini" style="padding: 5px 15px; font-size: 0.9rem;">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="boton-retroceso">
+            <a href="{% url 'musica_disponible' %}" class="retroceso-link">← Volver a Música Disponible</a>
+        </div>
+
+        <section class="album-detalle">
+            <div class="album-header">
+                <img src="{% static 'img/album-romance.jpg' %}" alt="Álbum Romance" class="album-portada">
+                <div class="album-info-detalle">
+                    <h2>Romance</h2>
+                    <p class="album-fecha">1991</p>
+                    <p class="album-descripcion">
+                        "Romance" es el octavo álbum de estudio de Luis Miguel, lanzado en 1991. Este disco marcó un antes y un después en su carrera, 
+                        pues significó su incursión en el género del bolero con arreglos modernos. El álbum contiene grandes clásicos del bolero 
+                        latinoamericano y se convirtió en uno de los trabajos más vendidos en la historia de la música latina.
+                    </p>
+                </div>
+            </div>
+
+            <div class="canciones-lista">
+                <h3>Canciones</h3>
+                
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">1</span>
+                        <span class="cancion-titulo">No me platiques más</span>
+                        <span class="cancion-duracion">3:33</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/nomeplatiquesmas.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">2</span>
+                        <span class="cancion-titulo">Inolvidable</span>
+                        <span class="cancion-duracion">4:17</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/inolvidable.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">3</span>
+                        <span class="cancion-titulo">La puerta</span>
+                        <span class="cancion-duracion">3:19</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/lapuerta.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">4</span>
+                        <span class="cancion-titulo">La barca</span>
+                        <span class="cancion-duracion">3:29</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/labarca.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">5</span>
+                        <span class="cancion-titulo">Te extraño</span>
+                        <span class="cancion-duracion">4:24</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/teextrano.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">6</span>
+                        <span class="cancion-titulo">Usted</span>
+                        <span class="cancion-duracion">3:43</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/usted.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">7</span>
+                        <span class="cancion-titulo">Contigo en la distancia</span>
+                        <span class="cancion-duracion">3:24</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/contigodistancia.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">8</span>
+                        <span class="cancion-titulo">Mucho corazón</span>
+                        <span class="cancion-duracion">3:23</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/muchocora.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">9</span>
+                        <span class="cancion-titulo">La mentira</span>
+                        <span class="cancion-duracion">3:47</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/lamentira.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">10</span>
+                        <span class="cancion-titulo">Cuando vuelva a tu lado</span>
+                        <span class="cancion-duracion">3:48</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/cuandovuelva.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">11</span>
+                        <span class="cancion-titulo">No sé tú</span>
+                        <span class="cancion-duracion">3:49</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/nose.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">12</span>
+                        <span class="cancion-titulo">Cómo</span>
+                        <span class="cancion-duracion">3:15</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static 'romance/como.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+            </div>
+        </section>
+
+        <section class="navegacion-albumes">
+            <h3>Otros álbumes disponibles</h3>
+            <div class="albumes-nav">
+                <a href="{% url 'album_20' %}" class="album-nav-link">
+                    <img src="{% static 'img/album-20anos.jpg' %}" alt="Álbum 20 Años" class="album-nav-img">
+                    <span>20 Años</span>
+                </a>
+                <a href="{% url 'album_2010' %}" class="album-nav-link">
+                    <img src="{% static 'img/album-luismiguel2010.jpg' %}" alt="Álbum Luis Miguel 2010" class="album-nav-img">
+                    <span>Luis Miguel (2010)</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'main.js' %}"></script>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h3>LuisMi Fan</h3>
+                <p>El mejor sitio para escuchar la música de Luis Miguel gratis</p>
+            </div>
+            <div class="footer-legal">
+                <p>&copy; 2025 LuisMi Fan. Este sitio es solo con fines educativos.</p>
+                <p>Luis Miguel y su música son propiedad de sus respectivos dueños.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

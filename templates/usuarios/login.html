@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - LuisMi Fan</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body style="background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+
+    <div class="login-container" style="background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center;">
+        
+        <h1 style="color: #b93c3c; margin-bottom: 1.5rem; font-size: 2rem;">LuisMi Fan</h1>
+        <h2 style="color: #333; font-size: 1.2rem; margin-bottom: 2rem;">Iniciar Sesión</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div style="text-align: left; margin-bottom: 1rem;">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                <style>
+                    input[type="text"], input[type="password"] {
+                        width: 100%;
+                        padding: 10px;
+                        margin-top: 5px;
+                        margin-bottom: 15px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        box-sizing: border-box; 
+                    }
+                </style>
+            </div>
+
+            <div style="text-align: left;">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="boton-mini" style="width: 100%; padding: 12px; font-size: 1rem; margin-top: 1rem; cursor: pointer;">
+                Entrar
+            </button>
+        </form>
+
+        <div style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem;">
+            <p style="color: #777; font-size: 0.9rem;">
+                ¿Aún no tienes cuenta? 
+                <a href="{% url 'registro' %}" style="color: #b93c3c; font-weight: 600; text-decoration: none;">Regístrate aquí</a>
+            </p>
+            <br>
+            <a href="{% url 'inicio' %}" style="color: #777; font-size: 0.8rem;">Volver a la página principal</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

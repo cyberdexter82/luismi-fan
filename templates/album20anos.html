@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuisMi Fan - 20 Años</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>LuisMi Fan</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'inicio' %}">Página Principal</a></li>
+                <li><a href="{% url 'musica_disponible' %}">Música Disponible</a></li>
+                <li><a href="{% url 'proximamente' %}">Próximamente</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'perfil' %}" style="color: #b93c3c; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            {% if user.perfil.imagen %}
+                                <img src="{{ user.perfil.imagen.url }}" style="width: 25px; height: 25px; border-radius: 50%; object-fit: cover; border: 1px solid #b93c3c;">
+                            {% else %}
+                                <i class="fas fa-user-circle"></i>
+                            {% endif %}
+                            {{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: #333; font-family: 'Montserrat', sans-serif; font-size: 1rem; cursor: pointer; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li><a href="{% url 'registro' %}" class="boton-mini" style="padding: 5px 15px; font-size: 0.9rem;">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="boton-retroceso">
+            <a href="{% url 'musica_disponible' %}" class="retroceso-link">← Volver a Música Disponible</a>
+        </div>
+
+        <section class="album-detalle">
+            <div class="album-header">
+                <img src="{% static 'img/album-20anos.jpg' %}" alt="Álbum 20 Años" class="album-portada">
+                <div class="album-info-detalle">
+                    <h2>20 Años</h2>
+                    <p class="album-fecha">1990</p>
+                    <p class="album-descripcion">
+                        "20 Años" es un álbum icónico que marcó el inicio de la nueva etapa musical de Luis Miguel. 
+                        Con este trabajo celebró sus primeros 20 años de vida y su trayectoria artística hasta ese momento.
+                    </p>
+                </div>
+            </div>
+
+            <div class="canciones-lista">
+                <h3>Canciones</h3>
+                
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">1</span>
+                        <span class="cancion-titulo">Entrégate</span>
+                        <span class="cancion-duracion">4:24</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/entregate.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">2</span>
+                        <span class="cancion-titulo">Oro de Ley</span>
+                        <span class="cancion-duracion">3:59</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/oro-de-ley.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">3</span>
+                        <span class="cancion-titulo">Tengo Todo Excepto A Ti</span>
+                        <span class="cancion-duracion">4:32</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/sera-que-no-me-amas.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">4</span>
+                        <span class="cancion-titulo">Será que no me amas</span>
+                        <span class="cancion-duracion">4:08</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/sera-que-no-me-amas.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">5</span>
+                        <span class="cancion-titulo">Amante Del Amor</span>
+                        <span class="cancion-duracion">3:22</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/amante-del-amor.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">6</span>
+                        <span class="cancion-titulo">Hoy el aire huele a tí</span>
+                        <span class="cancion-duracion">3:45</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/hoy-el-aire-huele-a-ti.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">7</span>
+                        <span class="cancion-titulo">Cuestión de piel</span>
+                        <span class="cancion-duracion">4:25</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/cuestion-de-piel.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">8</span>
+                        <span class="cancion-titulo">Más Allá De Todo</span>
+                        <span class="cancion-duracion">4:05</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/mas-alla-de-todo.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">9</span>
+                        <span class="cancion-titulo">Alguien como tú</span>
+                        <span class="cancion-duracion">4:19</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/alguien-como-tu.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+                <div class="cancion">
+                    <div class="cancion-info">
+                        <span class="cancion-numero">10</span>
+                        <span class="cancion-titulo">Más</span>
+                        <span class="cancion-duracion">4:05</span>
+                    </div>
+                    <audio controls>
+                        <source src="{% static '20años/mas.mp3' %}" type="audio/mpeg">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="navegacion-albumes">
+            <h3>Otros álbumes disponibles</h3>
+            <div class="albumes-nav">
+                <a href="{% url 'album_romance' %}" class="album-nav-link">
+                    <img src="{% static 'img/album-romance.jpg' %}" alt="Álbum Romance" class="album-nav-img">
+                    <span>Romance</span>
+                </a>
+                <a href="{% url 'album_2010' %}" class="album-nav-link">
+                    <img src="{% static 'img/album-luismiguel2010.jpg' %}" alt="Álbum Luis Miguel 2010" class="album-nav-img">
+                    <span>Luis Miguel (2010)</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'main.js' %}"></script>
+
+    <footer>
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h3>LuisMi Fan</h3>
+                <p>El mejor sitio para escuchar la música de Luis Miguel gratis</p>
+            </div>
+            <div class="footer-legal">
+                <p>&copy; 2025 LuisMi Fan. Este sitio es solo con fines educativos.</p>
+                <p>Luis Miguel y su música son propiedad de sus respectivos dueños.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

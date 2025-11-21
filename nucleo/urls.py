@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include # <--- 1. IMPORTANTE: AGREGAR include AQUÍ
+from django.urls import path, include 
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
@@ -19,9 +19,13 @@ urlpatterns = [
     path('romance/', views.vista_album_romance, name='album_romance'),
     path('2010/', views.vista_album_2010, name='album_2010'),
 
-    # --- 2. IMPORTANTE: ESTA ES LA LÍNEA QUE TE FALTA ---
-    # Esto conecta tus nuevas vistas de registro y login
+    # --- INCLUSIÓN DE USUARIOS Y AUTENTICACIÓN ---
+    # 1. Vistas personalizadas de la app 'usuarios' (Perfil, Registro)
     path('usuarios/', include('usuarios.urls')), 
+    
+    # 2. Vistas nativas de Django (Login, Logout, etc.) <--- ¡ESTA ES LA LÍNEA CRUCIAL!
+    path('auth/', include('django.contrib.auth.urls')), 
+    # -----------------------------------------------
 ]
 
 # Configuración para ver las imágenes en modo desarrollo

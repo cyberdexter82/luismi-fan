@@ -1,0 +1,17 @@
+# Archivos de la base de datos
+db.sqlite3
+
+# Entorno virtual y caché
+venv/
+*.pyc
+__pycache__/
+
+# Archivos de static y media que genera Django
+/static/
+/media/
+/staticfiles/
+/staticfiles_collected/
+
+# Archivos específicos de tu sistema operativo/IDE
+.DS_Store
+.vscode/

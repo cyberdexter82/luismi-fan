@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-x*n)_ah0h3%z)3v%8-@e$2$@+=9naui4h-e7-)2uk5-a5)'
 DEBUG = True 
 # Cambia 'tu_app_azure.azurewebsites.net' por el dominio real de Azure
 # O por '*' si necesitas que acepte cualquier host (menos seguro)
-ALLOWED_HOSTS = ['tu_dominio.azurewebsites.net', '127.0.0.1'] 
+ALLOWED_HOSTS = ['*']
 # ------------------------------------------
 
 # Application definition

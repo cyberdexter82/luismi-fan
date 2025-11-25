@@ -1,25 +1,30 @@
 """
 Django settings for nucleo project.
+Configuración Híbrida: Local (SQLite) / Producción (Azure PostgreSQL)
 """
 
 from pathlib import Path
 import os
-import dj_database_url # Importado para leer la URL de Azure/Postgres
+import mimetypes
+import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# 1. Rutas Base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings
-SECRET_KEY = 'django-insecure-x*n)_ah0h3%z)3v%8-@e$2$@+=9naui4h-e7-)2uk5-a5)'
+# 2. Seguridad
+# Intenta leer la llave secreta de las variables de entorno (Azure).
+# Si no existe, usa una clave por defecto para desarrollo local.
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-clave-desarrollo-local-12345')
 
-# --- CONFIGURACIÓN DE PRODUCCIÓN / AZURE ---
-DEBUG = True 
-# Cambia 'tu_app_azure.azurewebsites.net' por el dominio real de Azure
-# O por '*' si necesitas que acepte cualquier host (menos seguro)
+# DEBUG inteligente:
+# Si estamos en Azure (existe la variable WEBSITE_HOSTNAME), se apaga (False).
+# Si estamos en tu PC (no existe esa variable), se enciende (True).
+DEBUG = 'WEBSITE_HOSTNAME' not in os.environ
+
+# Permitir todos los hosts (necesario para que Azure funcione con cualquier dominio)
 ALLOWED_HOSTS = ['*']
-# ------------------------------------------
 
-# Application definition
+# 3. Aplicaciones Instaladas
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,12 +32,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'usuarios',
+    # Apps de terceros
+    'whitenoise.runserver_nostatic', # Ayuda a servir estáticos en modo local también
+    # Mis Apps
+    'usuarios', # Tu app de registro, login y perfiles
 ]
 
+# 4. Middleware (Intermediarios)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # <--- AÑADIDO: Para servir CSS en Azure
+    'whitenoise.middleware.WhiteNoiseMiddleware', # <--- VITAL: Sirve CSS/JS/Imágenes en la nube
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -46,6 +55,7 @@ ROOT_URLCONF = 'nucleo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # Carpeta donde guardas tus HTML
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -60,27 +70,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nucleo.wsgi.application'
 
-# ----------------------------------------------------------------------
-# Database (POSTGRESQL / AZURE READY)
-# ----------------------------------------------------------------------
-# Si encuentra la variable de entorno DATABASE_URL (que pondremos en Azure),
-# usa PostgreSQL. Si no, usa SQLite localmente.
-DATABASE_URL = os.getenv("DATABASE_URL") 
+# 5. Base de Datos (Configuración Inteligente)
+# Busca la variable 'DATABASE_URL' en el entorno (Azure).
+# Si la encuentra, se conecta a PostgreSQL.
+# Si no la encuentra (tu PC), usa el archivo db.sqlite3 local.
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600
+    )
+}
 
-if DATABASE_URL:
-    DATABASES = {
-'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-# ----------------------------------------------------------------------
-
-# Password validation
+# 6. Validadores de Contraseña
 AUTH_PASSWORD_VALIDATORS = [
     { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
     { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
@@ -88,41 +89,38 @@ AUTH_PASSWORD_VALIDATORS = [
     { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-# Internationalization
+# 7. Idioma y Zona Horaria
 LANGUAGE_CODE = 'es-mx'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# ----------------------------------------------------------------------
-# Static files (CSS, JavaScript, Images)
-# ----------------------------------------------------------------------
-STATIC_URL = 'static/'
+# 8. Archivos Estáticos (CSS, JS, Imágenes del diseño)
+STATIC_URL = '/static/'
 
-# VITAL: Carpeta donde Django buscará archivos estáticos (origen)
+# Dónde busca Django los archivos en tu proyecto (origen)
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# VITAL PARA PRODUCCIÓN (AZURE/WHITENOISE)
-# 1. Carpeta de destino donde collectstatic reunirá todo (DEBE SER ÚNICA)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+# Dónde los junta todos para la nube (destino)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# 2. Motor de almacenamiento que sirve los archivos estáticos con WhiteNoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
-# ----------------------------------------------------------------------
+# Motor de almacenamiento optimizado para la nube (WhiteNoise)
+# Usamos CompressedManifestStaticFilesStorage para máxima eficiencia
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# VITAL: Parche para que Windows cargue bien el CSS
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
-
-# Al final del archivo, asegúrate de tener esto para las fotos de perfil:
+# 9. Archivos Multimedia (Fotos de perfil subidas por usuarios)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Redirección al iniciar/cerrar sesión
-LOGIN_REDIRECT_URL = 'inicio'
-LOGOUT_REDIRECT_URL = 'inicio'
+# 10. Redirecciones del sistema de login
+LOGIN_REDIRECT_URL = 'inicio'  # A dónde ir después de iniciar sesión
+LOGOUT_REDIRECT_URL = 'inicio' # A dónde ir después de cerrar sesión
+LOGIN_URL = 'login'            # A dónde ir si intentan ver el perfil sin permiso
+
+# 11. Ajustes Finales
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Parche para que Windows reconozca correctamente los archivos CSS
+mimetypes.add_type("text/css", ".css", True)

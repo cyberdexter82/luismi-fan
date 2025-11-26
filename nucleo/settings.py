@@ -14,7 +14,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 2. Seguridad
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-clave-desarrollo-local-12345')
 
+# DEBUG inteligente:
+# Se apaga solo en Azure (si existe la variable WEBSITE_HOSTNAME)
 DEBUG = 'WEBSITE_HOSTNAME' not in os.environ
+
+# Permitir todos los hosts (necesario para Azure)
 ALLOWED_HOSTS = ['*']
 
 # 3. Aplicaciones Instaladas
@@ -25,14 +29,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Librería para probar estáticos en local como en producción
     'whitenoise.runserver_nostatic',
-    'usuarios', 
+    # Tu App de usuarios
+    'usuarios',
 ]
 
-# 4. Middleware
+# 4. Middleware (Intermediarios)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware', # <--- VITAL: Sirve CSS/JS en la nube
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,7 +66,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nucleo.wsgi.application'
 
-# 5. Base de Datos
+# 5. Base de Datos (Configuración Inteligente)
+# Busca la variable 'DATABASE_URL' en Azure. Si no está, usa SQLite local.
 DATABASES = {
     'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
@@ -68,7 +75,7 @@ DATABASES = {
     )
 }
 
-# 6. Validadores
+# 6. Validadores de Contraseña
 AUTH_PASSWORD_VALIDATORS = [
     { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
     { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
@@ -76,40 +83,43 @@ AUTH_PASSWORD_VALIDATORS = [
     { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
 
-# 7. Idioma
+# 7. Idioma y Zona Horaria
 LANGUAGE_CODE = 'es-mx'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# 8. Archivos Estáticos
+# 8. Archivos Estáticos (CSS, JS, Imágenes del diseño)
 STATIC_URL = '/static/'
 
+# Origen: Dónde están tus archivos en la PC
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# Destino: Dónde los pone collectstatic para la nube
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# --- CORRECCIÓN VITAL AQUÍ ---
-# Usamos CompressedStaticFilesStorage (sin Manifest) para evitar errores 404
+# Motor de almacenamiento: Usamos CompressedStaticFilesStorage (sin Manifest)
+# para evitar errores 404 si falta algún archivo.
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# 9. Multimedia
+# 9. Archivos Multimedia (Fotos de perfil)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 10. Redirecciones
-LOGIN_REDIRECT_URL = 'inicio' 
-LOGOUT_REDIRECT_URL = 'inicio' 
-LOGIN_URL = 'login' 
+LOGIN_REDIRECT_URL = 'inicio'
+LOGOUT_REDIRECT_URL = 'inicio'
+LOGIN_URL = 'login'
+
+# 11. Seguridad CSRF para Azure (VITAL PARA FORMULARIOS)
+# Esto arregla el error 403 "Forbidden"
+CSRF_TRUSTED_ORIGINS = [
+    'https://luismi-fan-app-2025-bgccc0dwazdahvhc.canadacentral-01.azurewebsites.net',
+]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Parche para Windows
 mimetypes.add_type("text/css", ".css", True)
-
-# SEGURIDAD CSRF PARA AZURE
-# Esto permite que los formularios funcionen en tu dominio de la nube
-CSRF_TRUSTED_ORIGINS = [
-    'luismi-fan-app-2025-bgccc0dwazdahvhc.canadacentral-01.azurewebsites.net',
-]

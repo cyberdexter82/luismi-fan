@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve # <--- Importamos la vista especial de servicio
 from django.contrib.auth import views as auth_views
 from usuarios import views as user_views
 from . import views
@@ -17,13 +18,14 @@ urlpatterns = [
     path('romance/', views.vista_album_romance, name='album_romance'),
     path('2010/', views.vista_album_2010, name='album_2010'),
 
-    # Rutas de Usuario (Directas aquí, sin usar include)
+    # Rutas de Usuario
     path('registro/', user_views.registro, name='registro'),
     path('perfil/', user_views.perfil, name='perfil'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='inicio'), name='logout'),
-]
 
-# Configuración para ver fotos en modo DEBUG
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # --- EL TRUCO MAESTRO PARA AZURE ---
+    # Esto obliga a Django a servir los archivos estáticos y media aunque DEBUG sea False
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+]

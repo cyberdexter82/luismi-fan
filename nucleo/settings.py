@@ -107,3 +107,9 @@ LOGIN_URL = 'login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 mimetypes.add_type("text/css", ".css", True)
+
+# SEGURIDAD CSRF PARA AZURE
+# Esto permite que los formularios funcionen en tu dominio de la nube
+CSRF_TRUSTED_ORIGINS = [
+    'luismi-fan-app-2025-bgccc0dwazdahvhc.canadacentral-01.azurewebsites.net',
+]

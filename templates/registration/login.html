@@ -17,26 +17,16 @@
         <h2 style="color: #333; font-size: 1.2rem; margin-bottom: 2rem;">Iniciar Sesión</h2>
 
         <form method="POST">
-            {% csrf_token %}
+            {% csrf_token %}  <!-- ¡ESTO ES VITAL! -->
             
             <div style="text-align: left; margin-bottom: 1rem;">
-                {{ form.username.label_tag }}
+                <!-- Renderizado simple de campos -->
+                <label>Usuario:</label>
                 {{ form.username }}
-                <style>
-                    input[type="text"], input[type="password"] {
-                        width: 100%;
-                        padding: 10px;
-                        margin-top: 5px;
-                        margin-bottom: 15px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        box-sizing: border-box; 
-                    }
-                </style>
             </div>
 
             <div style="text-align: left;">
-                {{ form.password.label_tag }}
+                <label>Contraseña:</label>
                 {{ form.password }}
             </div>
 
@@ -55,6 +45,5 @@
         </div>
 
     </div>
-
 </body>
 </html>

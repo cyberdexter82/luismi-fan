@@ -3,28 +3,25 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarse - LuisMi Fan</title>
+    <title>Registro - LuisMi Fan</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
-    
-    <div style="background: white; padding: 2.5rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px;">
-        <h2 style="text-align: center; color: #b93c3c; margin-bottom: 1.5rem;">Únete a LuisMi Fan</h2>
+<body style="background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="login-container" style="background: white; padding: 40px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px;">
+        <h2 style="text-align: center; color: #b93c3c;">Únete al Club</h2>
         
         <form method="POST">
-            {% csrf_token %}
+            {% csrf_token %} <!-- ¡IMPRESCINDIBLE! -->
+            
             {{ form.as_p }}
             
-            <button type="submit" class="boton-mini" style="width: 100%; margin-top: 1rem; cursor: pointer;">Registrarse</button>
+            <button type="submit" class="boton-mini" style="width: 100%; border: none; cursor: pointer; margin-top: 15px;">Registrarse</button>
         </form>
-
-        <div style="text-align: center; margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem;">
-            <p>¿Ya tienes cuenta?</p>
-            <a href="{% url 'login' %}" style="color: #b93c3c; font-weight: bold; text-decoration: none;">Inicia Sesión aquí</a>
-        </div>
+        
+        <p style="text-align: center; margin-top: 20px;">
+            ¿Ya tienes cuenta? <a href="{% url 'login' %}" style="color: #b93c3c;">Inicia sesión</a>
+        </p>
+        <p style="text-align: center;"><a href="{% url 'inicio' %}">Volver al inicio</a></p>
     </div>
-
 </body>
 </html>
